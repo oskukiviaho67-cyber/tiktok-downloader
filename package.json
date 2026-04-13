@@ -1,13 +1,10 @@
 {
   "name": "tiktok-downloader",
   "version": "1.0.0",
-  "description": "TikTok downloader for Render",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
-  },
-  "engines": {
-    "node": ">=18"
+    "start": "node server.js",
+    "postinstall": "pip install yt-dlp || true"
   },
   "dependencies": {
     "express": "^4.19.2"
