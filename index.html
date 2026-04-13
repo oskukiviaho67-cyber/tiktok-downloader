@@ -1,46 +1,110 @@
-const form = document.getElementById('download-form');
-const input = document.getElementById('video-url');
-const button = document.getElementById('download-btn');
-const statusEl = document.getElementById('status');
-const resultEl = document.getElementById('result');
-const thumbEl = document.getElementById('thumb');
-const titleEl = document.getElementById('video-title');
-const authorEl = document.getElementById('video-author');
-const directLinkEl = document.getElementById('direct-link');
-const proxyLinkEl = document.getElementById('proxy-link');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Download TikTok Videos Without Watermark</title>
+  <meta name="description" content="Download TikTok videos without watermark in HD quality. Fast, free, and easy to use on all devices." />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">A TikTok video downloader</p>
+      <h1>Download TikTok Videos <span>Without Watermark</span></h1>
+      <p class="subtext">
+        TikTok video downloader without watermark. Paste a TikTok link below to save videos in high quality.
+      </p>
 
-if (form) {
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const url = input.value.trim();
-    resultEl.classList.remove('show');
-    statusEl.textContent = 'Checking the TikTok link…';
-    button.disabled = true;
+      <div class="downloader-card">
+        <form id="download-form" class="download-form">
+          <input
+            id="video-url"
+            type="url"
+            placeholder="Paste TikTok link here"
+            required
+          />
+          <button id="download-btn" type="submit">Download</button>
+        </form>
 
-    try {
-      const res = await fetch(`/api/download?url=${encodeURIComponent(url)}`);
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to process the video.');
+        <p id="status" class="status"></p>
 
-      thumbEl.src = data.thumbnail || '';
-      thumbEl.style.display = data.thumbnail ? 'block' : 'none';
-      titleEl.textContent = data.title || 'TikTok video';
-      authorEl.textContent = data.author ? `By ${data.author}` : '';
-      directLinkEl.href = data.videoUrl;
-      proxyLinkEl.href = `/api/proxy?url=${encodeURIComponent(data.videoUrl)}`;
-      resultEl.classList.add('show');
-      statusEl.textContent = 'Ready. Use Download video to save the file.';
-    } catch (err) {
-      statusEl.textContent = err.message;
-    } finally {
-      button.disabled = false;
-    }
-  });
-}
+        <div id="result" class="result">
+          <img id="thumb" class="thumb" alt="" />
+          <h3 id="video-title"></h3>
+          <p id="video-author"></p>
+          <div class="result-actions">
+            <a id="direct-link" class="action-btn primary" target="_blank" rel="noopener noreferrer">Open Video</a>
+            <a id="proxy-link" class="action-btn secondary">Download Video</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-document.querySelectorAll('.faq-item').forEach((item) => {
-  const button = item.querySelector('.faq-q');
-  button?.addEventListener('click', () => {
-    item.classList.toggle('open');
-  });
-});
+    <section class="features">
+      <div class="feature-card">
+        <div class="icon">📱</div>
+        <h3>All Devices</h3>
+        <p>Works on iPhone, Android, PC, and Mac. No app installation needed.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🎞️</div>
+        <h3>HD Quality</h3>
+        <p>Save videos in the highest available quality, up to HD when supported.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🎵</div>
+        <h3>Extract Audio</h3>
+        <p>Downloader-ready layout with room for MP3 support later if you add it.</p>
+      </div>
+    </section>
+
+    <section class="how-to">
+      <h2>How to <span>Download</span></h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <h3>Copy the Link</h3>
+          <p>Open TikTok and copy the video link you want to download.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <h3>Paste & Download</h3>
+          <p>Paste the link above and click the download button.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <h3>Save Your Video</h3>
+          <p>Choose your preferred option and save the video to your device.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq">
+      <h2>Frequently Asked <span>Questions</span></h2>
+
+      <details>
+        <summary>Is it free to download TikTok videos?</summary>
+        <p>Yes. This tool is free to use.</p>
+      </details>
+
+      <details>
+        <summary>Can I download TikTok videos without watermark?</summary>
+        <p>The tool tries to extract the cleanest available source. Availability depends on TikTok and extractor support.</p>
+      </details>
+
+      <details>
+        <summary>Do I need to install an app?</summary>
+        <p>No. It works in your browser.</p>
+      </details>
+
+      <details>
+        <summary>Why does a video sometimes fail?</summary>
+        <p>TikTok changes things often. Some links may temporarily fail until the extractor is updated.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
