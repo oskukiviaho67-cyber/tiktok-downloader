@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TikTok Downloader</title>
+  <meta name="description" content="Download TikTok videos without watermark." />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f6f6f8;
+      margin: 0;
+      padding: 40px 20px;
+      color: #111;
+    }
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    h1 {
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+    p {
+      color: #666;
+      margin-bottom: 30px;
+    }
+    .box {
+      background: white;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+    }
+    input {
+      width: 100%;
+      max-width: 620px;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 16px;
+      padding: 14px 28px;
+      border: 0;
+      border-radius: 12px;
+      background: #ff2d75;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 24px;
+    }
+    .download-link {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 12px 20px;
+      background: #111;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+    }
+    .error {
+      color: #c62828;
+      margin-top: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Download TikTok Videos</h1>
+    <p>Paste a TikTok link below to test the downloader.</p>
+
+    <div class="box">
+      <input id="url" type="text" placeholder="Paste TikTok URL here" />
+      <br />
+      <button onclick="downloadVideo()">Download</button>
+      <div id="result"></div>
+    </div>
+  </div>
+
+  <script>
+    async function downloadVideo() {
+      const url = document.getElementById("url").value.trim();
+      const result = document.getElementById("result");
+
+      if (!url) {
+        result.innerHTML = '<div class="error">Paste a TikTok URL first.</div>';
+        return;
+      }
+
+      result.innerHTML = "Processing...";
+
+      try {
+        const res = await fetch("/api/download?url=" + encodeURIComponent(url));
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || "Download failed");
+        }
+
+        result.innerHTML = `
+          <video src="${data.video}" controls style="max-width:100%;margin-top:16px;border-radius:12px;"></video>
+          <br />
+          <a class="download-link" href="${data.video}" target="_blank" rel="noopener noreferrer">Open Video File</a>
+        `;
+      } catch (e) {
+        result.innerHTML = '<div class="error">' + e.message + '</div>';
+      }
+    }
+  </script>
+</body>
+</html>
